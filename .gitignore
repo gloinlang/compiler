@@ -13,6 +13,9 @@ test_*
 *_out
 comprehensive
 
+# Release packages
+release/
+
 # CMake
 CMakeCache.txt
 CMakeFiles/
