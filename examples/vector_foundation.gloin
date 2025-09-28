@@ -1,0 +1,43 @@
+import "@std"
+
+def struct Vector_i32 {
+    data: *i32;
+    size: i32;
+    capacity: i32;
+}
+
+// For now, create a simple version without complex pointer casts
+def main() -> i32 {
+    std.println("=== Vector Structure Foundation ===");
+    std.println("");
+    
+    std.println("✅ Vector struct defined with:");
+    std.println("  - data: *i32   (pointer to elements)");
+    std.println("  - size: i32    (number of elements)");
+    std.println("  - capacity: i32 (allocated space)");
+    std.println("");
+    
+    // Create a vector with null data for now
+    def vec: Vector_i32 = Vector_i32 {
+        data: cast(0, "*i32"),  // null pointer for now
+        size: 0,
+        capacity: 0
+    };
+    
+    std.print("Vector size: ");
+    std.println(std.to_string(vec.size));
+    std.print("Vector capacity: ");
+    std.println(std.to_string(vec.capacity));
+    
+    std.println("");
+    std.println("🎯 Next steps for complete vector implementation:");
+    std.println("1. Fix pointer casting syntax in cast()");
+    std.println("2. Implement memory allocation with malloc");
+    std.println("3. Add push_back, pop_back, resize methods");
+    std.println("4. Add operator[] for element access");
+    std.println("5. Add automatic capacity doubling");
+    std.println("");
+    std.println("Vector foundation ready! 🚀");
+    
+    return 0;
+}

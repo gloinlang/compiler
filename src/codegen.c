@@ -122,6 +122,39 @@ void add_builtin_functions(CodeGen *codegen) {
   );
   LLVMValueRef sprintf_func =
       LLVMAddFunction(codegen->module, "sprintf", sprintf_type);
+
+  // Add malloc function
+  LLVMTypeRef malloc_args[] = {
+      LLVMInt64TypeInContext(codegen->context) // size_t (i64)
+  };
+  LLVMTypeRef malloc_type = LLVMFunctionType(
+      LLVMPointerType(LLVMInt8TypeInContext(codegen->context), 0), // void* return
+      malloc_args, 1, 0                                            // not variadic
+  );
+  LLVMValueRef malloc_func =
+      LLVMAddFunction(codegen->module, "malloc", malloc_type);
+
+  // Add free function
+  LLVMTypeRef free_args[] = {
+      LLVMPointerType(LLVMInt8TypeInContext(codegen->context), 0) // void*
+  };
+  LLVMTypeRef free_type = LLVMFunctionType(
+      LLVMVoidTypeInContext(codegen->context), // void return
+      free_args, 1, 0                          // not variadic
+  );
+  LLVMValueRef free_func = LLVMAddFunction(codegen->module, "free", free_type);
+
+  // Add realloc function  
+  LLVMTypeRef realloc_args[] = {
+      LLVMPointerType(LLVMInt8TypeInContext(codegen->context), 0), // void* ptr
+      LLVMInt64TypeInContext(codegen->context)                     // size_t size
+  };
+  LLVMTypeRef realloc_type = LLVMFunctionType(
+      LLVMPointerType(LLVMInt8TypeInContext(codegen->context), 0), // void* return
+      realloc_args, 2, 0                                           // not variadic
+  );
+  LLVMValueRef realloc_func =
+      LLVMAddFunction(codegen->module, "realloc", realloc_type);
 }
 
 LLVMValueRef codegen_std_print(CodeGen *codegen, ASTNode *call) {
@@ -612,6 +645,66 @@ LLVMValueRef codegen_cast(CodeGen *codegen, ASTNode *call) {
     fprintf(stderr, "cast(): conversion from %s to %s not yet supported\n",
             type_to_string(src_type), target_type_name);
     return NULL;
+}
+
+LLVMValueRef codegen_std_malloc(CodeGen *codegen, ASTNode *call) {
+    if (call->data.call.arg_count != 1) {
+        fprintf(stderr, "std.malloc() expects exactly 1 argument (size)\n");
+        return NULL;
+    }
+
+    // Get the size argument
+    LLVMValueRef size_arg = codegen_expression(codegen, call->data.call.args[0]);
+    if (!size_arg) {
+        return NULL;
+    }
+
+    // Get malloc function
+    LLVMValueRef malloc_func = LLVMGetNamedFunction(codegen->module, "malloc");
+    if (!malloc_func) {
+        fprintf(stderr, "malloc function not found\n");
+        return NULL;
+    }
+
+    // Ensure size is i64 (size_t)
+    TypeKind size_type = get_expression_type(codegen, call->data.call.args[0]);
+    if (size_type != TYPE_I64) {
+        // Cast to i64 if necessary
+        LLVMTypeRef i64_type = LLVMInt64TypeInContext(codegen->context);
+        size_arg = LLVMBuildIntCast(codegen->builder, size_arg, i64_type, "size_cast");
+    }
+
+    // Call malloc
+    LLVMTypeRef malloc_type = LLVMGlobalGetValueType(malloc_func);
+    return LLVMBuildCall2(codegen->builder, malloc_type, malloc_func, &size_arg, 1, "malloc_result");
+}
+
+LLVMValueRef codegen_std_free(CodeGen *codegen, ASTNode *call) {
+    if (call->data.call.arg_count != 1) {
+        fprintf(stderr, "std.free() expects exactly 1 argument (pointer)\n");
+        return NULL;
+    }
+
+    // Get the pointer argument
+    LLVMValueRef ptr_arg = codegen_expression(codegen, call->data.call.args[0]);
+    if (!ptr_arg) {
+        return NULL;
+    }
+
+    // Get free function
+    LLVMValueRef free_func = LLVMGetNamedFunction(codegen->module, "free");
+    if (!free_func) {
+        fprintf(stderr, "free function not found\n");
+        return NULL;
+    }
+
+    // Cast pointer to void* if necessary
+    LLVMTypeRef void_ptr_type = LLVMPointerType(LLVMInt8TypeInContext(codegen->context), 0);
+    ptr_arg = LLVMBuildBitCast(codegen->builder, ptr_arg, void_ptr_type, "ptr_cast");
+
+    // Call free
+    LLVMTypeRef free_type = LLVMGlobalGetValueType(free_func);
+    return LLVMBuildCall2(codegen->builder, free_type, free_func, &ptr_arg, 1, "");
 }
 
 void free_codegen(CodeGen *codegen) {
@@ -1361,6 +1454,10 @@ LLVMValueRef codegen_call(CodeGen *codegen, ASTNode *call) {
     return codegen_std_to_string(codegen, call);
   } else if (strcmp(call->data.call.name, "cast") == 0) {
     return codegen_cast(codegen, call);
+  } else if (strcmp(call->data.call.name, "std.malloc") == 0) {
+    return codegen_std_malloc(codegen, call);
+  } else if (strcmp(call->data.call.name, "std.free") == 0) {
+    return codegen_std_free(codegen, call);
   }
 
   // Look up the function

@@ -81,6 +81,8 @@ void add_builtin_functions(CodeGen *codegen);
 LLVMValueRef codegen_std_print(CodeGen *codegen, ASTNode *call);
 LLVMValueRef codegen_std_println(CodeGen *codegen, ASTNode *call);
 LLVMValueRef codegen_cast(CodeGen *codegen, ASTNode *call);
+LLVMValueRef codegen_std_malloc(CodeGen *codegen, ASTNode *call);
+LLVMValueRef codegen_std_free(CodeGen *codegen, ASTNode *call);
 LLVMTypeRef get_llvm_type(CodeGen *codegen, const char *type_name);
 LLVMTypeRef get_llvm_type_from_kind(CodeGen *codegen, TypeKind type_kind);
 LLVMValueRef get_variable(CodeGen *codegen, const char *name);

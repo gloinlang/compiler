@@ -538,6 +538,33 @@ ASTNode *parse_struct_declaration(Parser *parser) {
                     field_type = malloc(strlen(base_type) + 2);
                     sprintf(field_type, "*%s", base_type);
                     free(base_type);
+                } else if (parser->current_token.type == TOKEN_BOOL) {
+                    field_type = strdup("*bool");
+                    eat(parser, TOKEN_BOOL);
+                } else if (parser->current_token.type == TOKEN_I8) {
+                    field_type = strdup("*i8");
+                    eat(parser, TOKEN_I8);
+                } else if (parser->current_token.type == TOKEN_I16) {
+                    field_type = strdup("*i16");
+                    eat(parser, TOKEN_I16);
+                } else if (parser->current_token.type == TOKEN_I32) {
+                    field_type = strdup("*i32");
+                    eat(parser, TOKEN_I32);
+                } else if (parser->current_token.type == TOKEN_I64) {
+                    field_type = strdup("*i64");
+                    eat(parser, TOKEN_I64);
+                } else if (parser->current_token.type == TOKEN_U8) {
+                    field_type = strdup("*u8");
+                    eat(parser, TOKEN_U8);
+                } else if (parser->current_token.type == TOKEN_U16) {
+                    field_type = strdup("*u16");
+                    eat(parser, TOKEN_U16);
+                } else if (parser->current_token.type == TOKEN_U32) {
+                    field_type = strdup("*u32");
+                    eat(parser, TOKEN_U32);
+                } else if (parser->current_token.type == TOKEN_U64) {
+                    field_type = strdup("*u64");
+                    eat(parser, TOKEN_U64);
                 } else {
                     parser_error(parser, "Expected type after '*'");
                     field_type = strdup("*unknown");
@@ -548,6 +575,36 @@ ASTNode *parse_struct_declaration(Parser *parser) {
             } else if (parser->current_token.type == TOKEN_BOOL) {
                 field_type = strdup("bool");
                 eat(parser, TOKEN_BOOL);
+            } else if (parser->current_token.type == TOKEN_I8) {
+                field_type = strdup("i8");
+                eat(parser, TOKEN_I8);
+            } else if (parser->current_token.type == TOKEN_I16) {
+                field_type = strdup("i16");
+                eat(parser, TOKEN_I16);
+            } else if (parser->current_token.type == TOKEN_I32) {
+                field_type = strdup("i32");
+                eat(parser, TOKEN_I32);
+            } else if (parser->current_token.type == TOKEN_I64) {
+                field_type = strdup("i64");
+                eat(parser, TOKEN_I64);
+            } else if (parser->current_token.type == TOKEN_U8) {
+                field_type = strdup("u8");
+                eat(parser, TOKEN_U8);
+            } else if (parser->current_token.type == TOKEN_U16) {
+                field_type = strdup("u16");
+                eat(parser, TOKEN_U16);
+            } else if (parser->current_token.type == TOKEN_U32) {
+                field_type = strdup("u32");
+                eat(parser, TOKEN_U32);
+            } else if (parser->current_token.type == TOKEN_U64) {
+                field_type = strdup("u64");
+                eat(parser, TOKEN_U64);
+            } else if (parser->current_token.type == TOKEN_F32) {
+                field_type = strdup("f32");
+                eat(parser, TOKEN_F32);
+            } else if (parser->current_token.type == TOKEN_F64) {
+                field_type = strdup("f64");
+                eat(parser, TOKEN_F64);
             } else {
                 parser_error(parser, "Expected field type");
                 field_type = strdup("unknown");
