@@ -127,7 +127,7 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') && always()
     
     steps:
     - name: Checkout code
@@ -137,6 +137,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: artifacts/
+      continue-on-error: true
 
     - name: Create Release
       id: create_release
@@ -160,14 +161,27 @@ jobs:
           - ✅ Project management: `gloinc init` for new projects
           
           ## Platform Support
-          - **Linux x64**: Full support with all features
-          - **macOS x64**: Full support with all features  
-          - **Windows x64**: Full support with all features
+          - **Linux x64**: Full support - pre-built binary included
+          - **macOS x64**: Full support - pre-built binary included  
+          - **Windows x64**: Build from source (pre-built binary coming in next release)
           
           ## Installation
+          
+          ### Linux & macOS Users
           1. Download the appropriate package for your platform
-          2. Extract to a directory in your PATH
-          3. Run `gloinc --help` to get started
+          2. Extract: `tar -xzf gloin-[platform].tar.gz`
+          3. Add to PATH or run directly: `./gloinc --help`
+          
+          ### Windows Users  
+          For now, please build from source:
+          ```bash
+          git clone https://github.com/gloinlang/compiler.git
+          cd compiler
+          # Install LLVM, CMake, and Visual Studio
+          mkdir build && cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          cmake --build . --config Release
+          ```
           
           ## Quick Start
           ```bash
@@ -204,6 +218,7 @@ jobs:
 
     - name: Upload Linux Release Asset
       uses: actions/upload-release-asset@v1
+      if: hashFiles('artifacts/gloin-linux-x64/gloin-linux-x64.tar.gz') != ''
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -214,6 +229,7 @@ jobs:
 
     - name: Upload macOS Release Asset
       uses: actions/upload-release-asset@v1
+      if: hashFiles('artifacts/gloin-macos-x64/gloin-macos-x64.tar.gz') != ''
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -224,6 +240,7 @@ jobs:
 
     - name: Upload Windows Release Asset
       uses: actions/upload-release-asset@v1
+      if: hashFiles('artifacts/gloin-windows-x64/gloin-windows-x64.zip') != ''
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
