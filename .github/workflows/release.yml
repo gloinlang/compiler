@@ -46,12 +46,9 @@ jobs:
     - name: Install LLVM (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        choco install cmake
-        # Install LLVM manually with proper paths
-        Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/LLVM-17.0.6-win64.exe" -OutFile "llvm-installer.exe"
-        Start-Process -FilePath "llvm-installer.exe" -ArgumentList "/S" -Wait
-        echo "LLVM_DIR=C:\Program Files\LLVM\lib\cmake\llvm" >> $env:GITHUB_ENV
-        echo "C:\Program Files\LLVM\bin" >> $env:GITHUB_PATH
+        choco install cmake llvm --force
+        echo "LLVM_DIR=C:/Program Files/LLVM/lib/cmake/llvm" >> $env:GITHUB_ENV
+        echo "C:/Program Files/LLVM/bin" >> $env:GITHUB_PATH
 
     - name: Configure CMake (Unix)
       if: matrix.os != 'windows-latest'
