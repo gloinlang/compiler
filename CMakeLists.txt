@@ -84,7 +84,19 @@ install(TARGETS gloinc
     RUNTIME DESTINATION bin
 )
 
-# Install headers for development
+# Install examples and documentation
+install(DIRECTORY examples/
+    DESTINATION share/gloin/examples
+    FILES_MATCHING PATTERN "*.gloin"
+)
+
+install(FILES 
+    README.md 
+    LICENSE
+    DESTINATION share/doc/gloin
+)
+
+# Install headers for development (optional)
 install(FILES ${GLOIN_HEADERS}
     DESTINATION include/gloin
 )

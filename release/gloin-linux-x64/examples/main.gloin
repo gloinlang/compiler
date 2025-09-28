@@ -1,0 +1,11 @@
+import "@std"
+
+def print_hello_world() -> void {
+    def msg: string = "Hello, World!";
+    std.print(msg);
+}
+
+def main() -> i32 {
+    print_hello_world();
+    return 0;
+}

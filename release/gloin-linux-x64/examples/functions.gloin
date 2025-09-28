@@ -1,0 +1,27 @@
+import "@std"
+
+def add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+def greet(name: string) -> void {
+    std.print("Hello, ");
+    std.println(name);
+}
+
+def main() -> i32 {
+    def x: i32 = 10;
+    def y: i32 = 20;
+    def sum: i32 = add(x, y);
+    
+    greet("Gloin Developer");
+    
+    std.print("The sum of ");
+    std.print(std.to_string(x));
+    std.print(" and ");
+    std.print(std.to_string(y));
+    std.print(" is ");
+    std.println(std.to_string(sum));
+    
+    return 0;
+}
