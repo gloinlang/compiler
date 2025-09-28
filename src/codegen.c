@@ -878,8 +878,8 @@ LLVMValueRef codegen_function(CodeGen *codegen, ASTNode *function) {
     LLVMBuildStore(codegen->builder, param_value, param_alloca);
 
     // Add to symbol table (parameters are always mutable)
-    set_variable(codegen, param->data.parameter.name, param_alloca, param_type,
-                 1);
+    set_variable_with_type(codegen, param->data.parameter.name, param_alloca, 
+                          param_type, 1, param->data.parameter.resolved_type);
   }
 
   // Generate function body
