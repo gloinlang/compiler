@@ -177,7 +177,7 @@ def main() -> i32 {
 ```gloin
 import "@std"
 
-struct Person {
+def struct Person {
     name: string,
     age: i32,
     
@@ -589,5 +589,3 @@ If you encounter issues:
 4. **Report Bugs**: Create an issue with minimal reproduction case
 
 ---
-
-**Happy coding with Gloin!**
