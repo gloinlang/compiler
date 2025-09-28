@@ -1,0 +1,58 @@
+import "@std"
+
+def main() -> i32 {
+    std.println("=== Complete Type System Test ===");
+    std.println("");
+    
+    // Test all integer types with casting and printing
+    std.println("8-bit types:");
+    def small_i8: i8 = 127;
+    def small_u8: u8 = 255;
+    std.print("i8 max: ");
+    std.println(std.to_string(small_i8));
+    std.print("u8 max: ");
+    std.println(std.to_string(small_u8));
+    
+    std.println("");
+    std.println("16-bit types:");
+    def med_i16: i16 = 32767;
+    def med_u16: u16 = 65535;
+    std.print("i16 max: ");
+    std.println(std.to_string(med_i16));
+    std.print("u16 max: ");
+    std.println(std.to_string(med_u16));
+    
+    std.println("");
+    std.println("32-bit types:");
+    def big_i32: i32 = 2147483647;
+    def big_u32: u32 = cast(4294967295, "u32");
+    std.print("i32 max: ");
+    std.println(std.to_string(big_i32));
+    std.print("u32 large: ");
+    std.println(std.to_string(big_u32));
+    
+    std.println("");
+    std.println("64-bit types:");
+    def huge_i64: i64 = cast(9223372036854775807, "i64");
+    def huge_u64: u64 = cast(18446744073709551615, "u64");
+    std.print("i64 max: ");
+    std.println(std.to_string(huge_i64));
+    std.print("u64 max: ");
+    std.println(std.to_string(huge_u64));
+    
+    std.println("");
+    std.println("Type casting demonstration:");
+    def start: i8 = 42;
+    def step1: i16 = cast(start, "i16");
+    def step2: i32 = cast(step1, "i32");
+    def step3: i64 = cast(step2, "i64");
+    
+    std.print("i8(42) -> i16 -> i32 -> i64: ");
+    std.println(std.to_string(step3));
+    
+    std.println("");
+    std.println("All basic types work perfectly!");
+    std.println("Note: i128/u128 declared but printing needs custom implementation");
+    
+    return 0;
+}

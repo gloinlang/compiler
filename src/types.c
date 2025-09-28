@@ -17,12 +17,15 @@ static const Type type_table[] = {
     {TYPE_I16,      2,    1,      1,       1,          1,       0,         NULL},
     {TYPE_I32,      4,    1,      1,       1,          1,       0,         NULL},
     {TYPE_I64,      8,    1,      1,       1,          1,       0,         NULL},
+    {TYPE_I128,     16,   1,      1,       1,          1,       0,         NULL},  // 128-bit signed
     {TYPE_U8,       1,    0,      1,       1,          1,       0,         NULL},
     {TYPE_U16,      2,    0,      1,       1,          1,       0,         NULL},
     {TYPE_U32,      4,    0,      1,       1,          1,       0,         NULL},
     {TYPE_U64,      8,    0,      1,       1,          1,       0,         NULL},
+    {TYPE_U128,     16,   0,      1,       1,          1,       0,         NULL},  // 128-bit unsigned
     {TYPE_F32,      4,    1,      1,       1,          1,       0,         NULL},
     {TYPE_F64,      8,    1,      1,       1,          1,       0,         NULL},
+    {TYPE_F128,     16,   1,      1,       1,          1,       0,         NULL},  // 128-bit float
     {TYPE_CHAR,     1,    0,      0,       1,          1,       0,         NULL},
     {TYPE_STRING,   8,    0,      0,       1,          0,       0,         NULL}  // String comparisons only ==, !=
 };
@@ -104,12 +107,15 @@ TypeKind string_to_type(const char* type_str) {
     if (strcmp(type_str, "i16") == 0) return TYPE_I16;
     if (strcmp(type_str, "i32") == 0) return TYPE_I32;
     if (strcmp(type_str, "i64") == 0) return TYPE_I64;
+    if (strcmp(type_str, "i128") == 0) return TYPE_I128;
     if (strcmp(type_str, "u8") == 0) return TYPE_U8;
     if (strcmp(type_str, "u16") == 0) return TYPE_U16;
     if (strcmp(type_str, "u32") == 0) return TYPE_U32;
     if (strcmp(type_str, "u64") == 0) return TYPE_U64;
+    if (strcmp(type_str, "u128") == 0) return TYPE_U128;
     if (strcmp(type_str, "f32") == 0) return TYPE_F32;
     if (strcmp(type_str, "f64") == 0) return TYPE_F64;
+    if (strcmp(type_str, "f128") == 0) return TYPE_F128;
     if (strcmp(type_str, "char") == 0) return TYPE_CHAR;
     if (strcmp(type_str, "string") == 0) return TYPE_STRING;
     

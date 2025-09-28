@@ -10,8 +10,19 @@ typedef enum {
     TOKEN_CONST,      // NEW: const keyword
     TOKEN_RETURN,
     TOKEN_BOOL,
-    TOKEN_I32,        // NEW: explicit i32 type
-    TOKEN_F32,        // NEW: f32 type  
+    TOKEN_I8,         // 8-bit signed integer
+    TOKEN_I16,        // 16-bit signed integer  
+    TOKEN_I32,        // 32-bit signed integer
+    TOKEN_I64,        // 64-bit signed integer
+    TOKEN_I128,       // 128-bit signed integer
+    TOKEN_U8,         // 8-bit unsigned integer
+    TOKEN_U16,        // 16-bit unsigned integer
+    TOKEN_U32,        // 32-bit unsigned integer  
+    TOKEN_U64,        // 64-bit unsigned integer
+    TOKEN_U128,       // 128-bit unsigned integer
+    TOKEN_F32,        // 32-bit float
+    TOKEN_F64,        // 64-bit float  
+    TOKEN_F128,       // 128-bit float  
     TOKEN_STRING_TYPE, // NEW: explicit string type
     TOKEN_VOID,       // NEW: void type
     TOKEN_TRUE,

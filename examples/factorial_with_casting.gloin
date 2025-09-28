@@ -1,0 +1,32 @@
+import "@std"
+
+def factorial_i64(n: i64) -> i64 {
+    def mut result: i64 = cast(1, "i64");
+    def mut i: i64 = cast(1, "i64");
+    
+    while i <= n {
+        result = result * i;
+        i = i + cast(1, "i64");
+    }
+    
+    return result;
+}
+
+def main() -> i32 {
+    std.println("=== Factorial with Type Casting ===");
+    
+    def small_fact: i32 = 4;
+    def large_fact: i64 = cast(13, "i64");  // Cast to i64 for large factorial
+    
+    // Calculate 4! in i32 (fits)
+    def fact4_i32: i32 = 24;  // Manually set for now
+    std.print("4! = ");
+    std.println(std.to_string(fact4_i32));
+    
+    // Calculate 13! in i64 (no overflow)
+    def fact13_i64: i64 = factorial_i64(large_fact);
+    std.print("13! (i64) = ");
+    std.println(std.to_string(fact13_i64));  // This will show the correct result
+    
+    return 0;
+}

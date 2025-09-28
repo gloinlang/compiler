@@ -9,12 +9,15 @@ typedef enum {
     TYPE_I16, 
     TYPE_I32,
     TYPE_I64,
+    TYPE_I128,      // 128-bit signed integer
     TYPE_U8,
     TYPE_U16,
     TYPE_U32,
     TYPE_U64,
+    TYPE_U128,      // 128-bit unsigned integer
     TYPE_F32,
     TYPE_F64,
+    TYPE_F128,      // 128-bit float
     TYPE_CHAR,
     TYPE_STRING,
     // Pointer types (start from a high number to leave room for basic types)
@@ -24,12 +27,15 @@ typedef enum {
     TYPE_PTR_I16,
     TYPE_PTR_I32,
     TYPE_PTR_I64,
+    TYPE_PTR_I128,
     TYPE_PTR_U8,
     TYPE_PTR_U16,
     TYPE_PTR_U32,
     TYPE_PTR_U64,
+    TYPE_PTR_U128,
     TYPE_PTR_F32,
     TYPE_PTR_F64,
+    TYPE_PTR_F128,
     TYPE_PTR_CHAR,
     TYPE_PTR_STRING,
     // Struct types (start from 200 to leave room for expansion)

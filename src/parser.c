@@ -78,12 +78,24 @@ ASTNode *parse_program(Parser *parser) {
                 
                 // Parse type
                 char *var_type = NULL;
-                if (parser->current_token.type == TOKEN_I32) {
+                if (parser->current_token.type == TOKEN_I8) {
+                    var_type = strdup("i8");
+                    eat(parser, TOKEN_I8);
+                } else if (parser->current_token.type == TOKEN_I16) {
+                    var_type = strdup("i16");
+                    eat(parser, TOKEN_I16);
+                } else if (parser->current_token.type == TOKEN_I32) {
                     var_type = strdup("i32");
                     eat(parser, TOKEN_I32);
+                } else if (parser->current_token.type == TOKEN_I64) {
+                    var_type = strdup("i64");
+                    eat(parser, TOKEN_I64);
                 } else if (parser->current_token.type == TOKEN_F32) {
                     var_type = strdup("f32");
                     eat(parser, TOKEN_F32);
+                } else if (parser->current_token.type == TOKEN_F64) {
+                    var_type = strdup("f64");
+                    eat(parser, TOKEN_F64);
                 } else if (parser->current_token.type == TOKEN_STRING_TYPE) {
                     var_type = strdup("string");
                     eat(parser, TOKEN_STRING_TYPE);
@@ -243,12 +255,45 @@ ASTNode *parse_function_declaration(Parser *parser) {
     } else if (parser->current_token.type == TOKEN_BOOL) {
         param_types[param_count] = strdup("bool");
         eat(parser, TOKEN_BOOL);
+    } else if (parser->current_token.type == TOKEN_I8) {
+        param_types[param_count] = strdup("i8");
+        eat(parser, TOKEN_I8);
+    } else if (parser->current_token.type == TOKEN_I16) {
+        param_types[param_count] = strdup("i16");
+        eat(parser, TOKEN_I16);
     } else if (parser->current_token.type == TOKEN_I32) {
         param_types[param_count] = strdup("i32");
         eat(parser, TOKEN_I32);
+    } else if (parser->current_token.type == TOKEN_I64) {
+        param_types[param_count] = strdup("i64");
+        eat(parser, TOKEN_I64);
+    } else if (parser->current_token.type == TOKEN_I128) {
+        param_types[param_count] = strdup("i128");
+        eat(parser, TOKEN_I128);
+    } else if (parser->current_token.type == TOKEN_U8) {
+        param_types[param_count] = strdup("u8");
+        eat(parser, TOKEN_U8);
+    } else if (parser->current_token.type == TOKEN_U16) {
+        param_types[param_count] = strdup("u16");
+        eat(parser, TOKEN_U16);
+    } else if (parser->current_token.type == TOKEN_U32) {
+        param_types[param_count] = strdup("u32");
+        eat(parser, TOKEN_U32);
+    } else if (parser->current_token.type == TOKEN_U64) {
+        param_types[param_count] = strdup("u64");
+        eat(parser, TOKEN_U64);
+    } else if (parser->current_token.type == TOKEN_U128) {
+        param_types[param_count] = strdup("u128");
+        eat(parser, TOKEN_U128);
     } else if (parser->current_token.type == TOKEN_F32) {
         param_types[param_count] = strdup("f32");
         eat(parser, TOKEN_F32);
+    } else if (parser->current_token.type == TOKEN_F64) {
+        param_types[param_count] = strdup("f64");
+        eat(parser, TOKEN_F64);
+    } else if (parser->current_token.type == TOKEN_F128) {
+        param_types[param_count] = strdup("f128");
+        eat(parser, TOKEN_F128);
     } else if (parser->current_token.type == TOKEN_STRING_TYPE) {
         param_types[param_count] = strdup("string");
         eat(parser, TOKEN_STRING_TYPE);
@@ -295,12 +340,45 @@ ASTNode *parse_function_declaration(Parser *parser) {
     } else if (parser->current_token.type == TOKEN_BOOL) {
         return_type = strdup("bool");
         eat(parser, TOKEN_BOOL);
+    } else if (parser->current_token.type == TOKEN_I8) {
+        return_type = strdup("i8");
+        eat(parser, TOKEN_I8);
+    } else if (parser->current_token.type == TOKEN_I16) {
+        return_type = strdup("i16");
+        eat(parser, TOKEN_I16);
     } else if (parser->current_token.type == TOKEN_I32) {
         return_type = strdup("i32");
         eat(parser, TOKEN_I32);
+    } else if (parser->current_token.type == TOKEN_I64) {
+        return_type = strdup("i64");
+        eat(parser, TOKEN_I64);
+    } else if (parser->current_token.type == TOKEN_I128) {
+        return_type = strdup("i128");
+        eat(parser, TOKEN_I128);
+    } else if (parser->current_token.type == TOKEN_U8) {
+        return_type = strdup("u8");
+        eat(parser, TOKEN_U8);
+    } else if (parser->current_token.type == TOKEN_U16) {
+        return_type = strdup("u16");
+        eat(parser, TOKEN_U16);
+    } else if (parser->current_token.type == TOKEN_U32) {
+        return_type = strdup("u32");
+        eat(parser, TOKEN_U32);
+    } else if (parser->current_token.type == TOKEN_U64) {
+        return_type = strdup("u64");
+        eat(parser, TOKEN_U64);
+    } else if (parser->current_token.type == TOKEN_U128) {
+        return_type = strdup("u128");
+        eat(parser, TOKEN_U128);
     } else if (parser->current_token.type == TOKEN_F32) {
         return_type = strdup("f32");
         eat(parser, TOKEN_F32);
+    } else if (parser->current_token.type == TOKEN_F64) {
+        return_type = strdup("f64");
+        eat(parser, TOKEN_F64);
+    } else if (parser->current_token.type == TOKEN_F128) {
+        return_type = strdup("f128");
+        eat(parser, TOKEN_F128);
     } else if (parser->current_token.type == TOKEN_STRING_TYPE) {
         return_type = strdup("string");
         eat(parser, TOKEN_STRING_TYPE);
@@ -641,12 +719,45 @@ ASTNode *parse_variable_declaration(Parser *parser) {
     } else if (parser->current_token.type == TOKEN_BOOL) {
         var_type = strdup("bool");
         eat(parser, TOKEN_BOOL);
+    } else if (parser->current_token.type == TOKEN_I8) {
+        var_type = strdup("i8");
+        eat(parser, TOKEN_I8);
+    } else if (parser->current_token.type == TOKEN_I16) {
+        var_type = strdup("i16");
+        eat(parser, TOKEN_I16);
     } else if (parser->current_token.type == TOKEN_I32) {
         var_type = strdup("i32");
         eat(parser, TOKEN_I32);
+    } else if (parser->current_token.type == TOKEN_I64) {
+        var_type = strdup("i64");
+        eat(parser, TOKEN_I64);
+    } else if (parser->current_token.type == TOKEN_I128) {
+        var_type = strdup("i128");
+        eat(parser, TOKEN_I128);
+    } else if (parser->current_token.type == TOKEN_U8) {
+        var_type = strdup("u8");
+        eat(parser, TOKEN_U8);
+    } else if (parser->current_token.type == TOKEN_U16) {
+        var_type = strdup("u16");
+        eat(parser, TOKEN_U16);
+    } else if (parser->current_token.type == TOKEN_U32) {
+        var_type = strdup("u32");
+        eat(parser, TOKEN_U32);
+    } else if (parser->current_token.type == TOKEN_U64) {
+        var_type = strdup("u64");
+        eat(parser, TOKEN_U64);
+    } else if (parser->current_token.type == TOKEN_U128) {
+        var_type = strdup("u128");
+        eat(parser, TOKEN_U128);
     } else if (parser->current_token.type == TOKEN_F32) {
         var_type = strdup("f32");
         eat(parser, TOKEN_F32);
+    } else if (parser->current_token.type == TOKEN_F64) {
+        var_type = strdup("f64");
+        eat(parser, TOKEN_F64);
+    } else if (parser->current_token.type == TOKEN_F128) {
+        var_type = strdup("f128");
+        eat(parser, TOKEN_F128);
     } else if (parser->current_token.type == TOKEN_STRING_TYPE) {
         var_type = strdup("string");
         eat(parser, TOKEN_STRING_TYPE);

@@ -1,0 +1,47 @@
+import "@std"
+
+def main() -> i32 {
+    std.println("=== Type Casting with cast() Function ===");
+    std.println("");
+    
+    // Test widening conversions (safe)
+    def small_i8: i8 = 100;
+    def small_u8: u8 = 200;
+    def medium_i16: i16 = 30000;
+    
+    std.println("=== Widening Conversions (Safe) ===");
+    def promoted_i16: i16 = cast(small_i8, "i16");   // i8 -> i16
+    def promoted_i32: i32 = cast(medium_i16, "i32"); // i16 -> i32
+    def promoted_i64: i64 = cast(promoted_i32, "i64"); // i32 -> i64
+    
+    std.print("i8(100) -> i16: ");
+    std.println(std.to_string(promoted_i16));
+    std.print("i16(30000) -> i32: ");
+    std.println(std.to_string(promoted_i32));
+    
+    std.println("");
+    std.println("=== Narrowing Conversions (Potential Overflow) ===");
+    
+    // Test narrowing conversions (potential overflow)
+    def large_i32: i32 = 300;
+    def narrow_i8: i8 = cast(large_i32, "i8");      // i32 -> i8 (300 > 127, will overflow)
+    def narrow_u8: u8 = cast(large_i32, "u8");      // i32 -> u8 (300 > 255, will overflow)
+    
+    std.print("i32(300) -> i8: ");
+    std.println(std.to_string(narrow_i8));
+    std.print("i32(300) -> u8: ");
+    std.println(std.to_string(narrow_u8));
+    
+    std.println("");
+    std.println("=== Signed/Unsigned Conversions ===");
+    
+    def signed_val: i32 = -100;
+    def unsigned_val: u32 = cast(signed_val, "u32"); // i32 -> u32 conversion
+    
+    std.print("i32(-100) -> u32: ");
+    std.println(std.to_string(unsigned_val));
+    
+    std.println("");
+    std.println("Cast function works! Runtime overflow is user responsibility.");
+    return 0;
+}

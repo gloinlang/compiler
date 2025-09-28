@@ -150,12 +150,38 @@ LLVMValueRef codegen_std_print(CodeGen *codegen, ASTNode *call) {
   case TYPE_STRING:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%s", "fmt");
     break;
+  case TYPE_I8:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hhd", "fmt");
+    break;
+  case TYPE_I16:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hd", "fmt");
+    break;
   case TYPE_I32:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%d", "fmt");
     break;
   case TYPE_I64:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%ld", "fmt");
     break;
+  case TYPE_I128:
+    // For now, treat i128 as unsupported (needs custom formatting)
+    fprintf(stderr, "i128 printing not yet implemented - needs custom formatting\n");
+    return NULL;
+  case TYPE_U8:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hhu", "fmt");
+    break;
+  case TYPE_U16:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hu", "fmt");
+    break;
+  case TYPE_U32:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%u", "fmt");
+    break;
+  case TYPE_U64:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%lu", "fmt");
+    break;
+  case TYPE_U128:
+    // For now, treat u128 as unsupported (needs custom formatting)
+    fprintf(stderr, "u128 printing not yet implemented - needs custom formatting\n");
+    return NULL;
   case TYPE_BOOL:
     // Convert boolean to string representation
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%s", "fmt");
@@ -208,12 +234,36 @@ LLVMValueRef codegen_std_println(CodeGen *codegen, ASTNode *call) {
   case TYPE_STRING:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%s\n", "fmt");
     break;
+  case TYPE_I8:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hhd\n", "fmt");
+    break;
+  case TYPE_I16:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hd\n", "fmt");
+    break;
   case TYPE_I32:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%d\n", "fmt");
     break;
   case TYPE_I64:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%ld\n", "fmt");
     break;
+  case TYPE_I128:
+    fprintf(stderr, "i128 printing not yet implemented - needs custom formatting\n");
+    return NULL;
+  case TYPE_U8:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hhu\n", "fmt");
+    break;
+  case TYPE_U16:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hu\n", "fmt");
+    break;
+  case TYPE_U32:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%u\n", "fmt");
+    break;
+  case TYPE_U64:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%lu\n", "fmt");
+    break;
+  case TYPE_U128:
+    fprintf(stderr, "u128 printing not yet implemented - needs custom formatting\n");
+    return NULL;
   case TYPE_BOOL:
     // Convert boolean to string representation
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%s\n", "fmt");
@@ -413,12 +463,36 @@ LLVMValueRef codegen_std_to_string(CodeGen *codegen, ASTNode *call) {
   LLVMValueRef final_arg = arg;
 
   switch (arg_type) {
+  case TYPE_I8:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hhd", "fmt");
+    break;
+  case TYPE_I16:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hd", "fmt");
+    break;
   case TYPE_I32:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%d", "fmt");
     break;
   case TYPE_I64:
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%ld", "fmt");
     break;
+  case TYPE_I128:
+    fprintf(stderr, "i128 to_string not yet implemented - needs custom formatting\n");
+    return NULL;
+  case TYPE_U8:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hhu", "fmt");
+    break;
+  case TYPE_U16:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%hu", "fmt");
+    break;
+  case TYPE_U32:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%u", "fmt");
+    break;
+  case TYPE_U64:
+    format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%lu", "fmt");
+    break;
+  case TYPE_U128:
+    fprintf(stderr, "u128 to_string not yet implemented - needs custom formatting\n");
+    return NULL;
   case TYPE_BOOL:
     // Convert boolean to string representation
     format_str = LLVMBuildGlobalStringPtr(codegen->builder, "%s", "fmt");
@@ -448,6 +522,96 @@ LLVMValueRef codegen_std_to_string(CodeGen *codegen, ASTNode *call) {
 
   // Return the buffer pointer
   return buffer_ptr;
+}
+
+LLVMValueRef codegen_cast(CodeGen *codegen, ASTNode *call) {
+    if (call->data.call.arg_count != 2) {
+        fprintf(stderr, "cast() expects exactly 2 arguments: cast(value, target_type)\n");
+        return NULL;
+    }
+
+    // Get the value to cast
+    LLVMValueRef value = codegen_expression(codegen, call->data.call.args[0]);
+    if (!value) {
+        return NULL;
+    }
+
+    // Get the source type
+    TypeKind src_type = get_expression_type(codegen, call->data.call.args[0]);
+    
+    // Get the target type from the second argument (should be a string literal with type name)
+    ASTNode *target_type_node = call->data.call.args[1];
+    const char *target_type_name = NULL;
+    
+    if (target_type_node->type == NODE_IDENTIFIER) {
+        target_type_name = target_type_node->data.identifier.name;
+    } else if (target_type_node->type == NODE_LITERAL && 
+               strcmp(target_type_node->data.literal.type, "string") == 0) {
+        target_type_name = target_type_node->data.literal.value;
+    } else {
+        fprintf(stderr, "cast() second argument must be a type name (identifier or string)\n");
+        return NULL;
+    }
+    TypeKind target_type = string_to_type(target_type_name);
+    
+    if (target_type == TYPE_UNKNOWN) {
+        fprintf(stderr, "cast(): unknown target type '%s'\n", target_type_name);
+        return NULL;
+    }
+
+    // Get LLVM types
+    LLVMTypeRef src_llvm_type = get_llvm_type_from_kind(codegen, src_type);
+    LLVMTypeRef target_llvm_type = get_llvm_type_from_kind(codegen, target_type);
+    
+    if (!src_llvm_type || !target_llvm_type) {
+        fprintf(stderr, "cast(): failed to get LLVM types\n");
+        return NULL;
+    }
+
+    // Perform the cast based on the types
+    const Type *src_info = get_type_info(src_type);
+    const Type *target_info = get_type_info(target_type);
+    
+    if (!src_info || !target_info) {
+        fprintf(stderr, "cast(): failed to get type information\n");
+        return NULL;
+    }
+
+    // Same types - no cast needed
+    if (src_type == target_type) {
+        return value;
+    }
+
+    // Integer to integer casts
+    if (src_info->is_numeric && target_info->is_numeric &&
+        !strcmp(type_to_string(src_type), type_to_string(target_type)) == 0) {
+        
+        // Check if it's a widening or narrowing conversion
+        if (src_info->size < target_info->size) {
+            // Widening conversion - safe
+            if (src_info->is_signed && target_info->is_signed) {
+                // Signed extension
+                return LLVMBuildSExt(codegen->builder, value, target_llvm_type, "cast_sext");
+            } else if (!src_info->is_signed && !target_info->is_signed) {
+                // Zero extension
+                return LLVMBuildZExt(codegen->builder, value, target_llvm_type, "cast_zext");
+            } else {
+                // Signed/unsigned conversion with extension
+                return LLVMBuildIntCast(codegen->builder, value, target_llvm_type, "cast_int");
+            }
+        } else if (src_info->size > target_info->size) {
+            // Narrowing conversion - potential runtime overflow
+            return LLVMBuildTrunc(codegen->builder, value, target_llvm_type, "cast_trunc");
+        } else {
+            // Same size, different signedness
+            return LLVMBuildBitCast(codegen->builder, value, target_llvm_type, "cast_bitcast");
+        }
+    }
+
+    // For now, reject other conversions
+    fprintf(stderr, "cast(): conversion from %s to %s not yet supported\n",
+            type_to_string(src_type), target_type_name);
+    return NULL;
 }
 
 void free_codegen(CodeGen *codegen) {
@@ -496,6 +660,8 @@ LLVMTypeRef get_llvm_type_from_kind(CodeGen *codegen, TypeKind type_kind) {
     return LLVMInt32TypeInContext(codegen->context);
   case TYPE_I64:
     return LLVMInt64TypeInContext(codegen->context);
+  case TYPE_I128:
+    return LLVMIntTypeInContext(codegen->context, 128);  // 128-bit integer
   case TYPE_U8:
     return LLVMInt8TypeInContext(codegen->context);
   case TYPE_U16:
@@ -504,10 +670,14 @@ LLVMTypeRef get_llvm_type_from_kind(CodeGen *codegen, TypeKind type_kind) {
     return LLVMInt32TypeInContext(codegen->context);
   case TYPE_U64:
     return LLVMInt64TypeInContext(codegen->context);
+  case TYPE_U128:
+    return LLVMIntTypeInContext(codegen->context, 128);  // 128-bit integer (same as i128)
   case TYPE_F32:
     return LLVMFloatTypeInContext(codegen->context);
   case TYPE_F64:
     return LLVMDoubleTypeInContext(codegen->context);
+  case TYPE_F128:
+    return LLVMFP128TypeInContext(codegen->context);     // 128-bit float
   case TYPE_CHAR:
     return LLVMInt8TypeInContext(codegen->context);
   case TYPE_STRING:
@@ -655,6 +825,16 @@ TypeKind get_expression_type(CodeGen *codegen, ASTNode *node) {
       return TYPE_STRING;
     } else if (strcmp(node->data.call.name, "std.readln") == 0) {
       return TYPE_STRING;
+    } else if (strcmp(node->data.call.name, "cast") == 0) {
+      // Cast function returns the target type
+      if (node->data.call.arg_count >= 2) {
+        ASTNode *target_type_arg = node->data.call.args[1];
+        if (target_type_arg->type == NODE_LITERAL && 
+            strcmp(target_type_arg->data.literal.type, "string") == 0) {
+          return string_to_type(target_type_arg->data.literal.value);
+        }
+      }
+      return TYPE_UNKNOWN;
     } else {
       // For user-defined functions, we'd need to look up the function signature
       // For now, return unknown
@@ -1027,6 +1207,37 @@ LLVMValueRef codegen_variable_decl(CodeGen *codegen, ASTNode *var_decl) {
                                                    initial_value, "struct_val");
         LLVMBuildStore(codegen->builder, struct_value, alloca_inst);
       } else {
+        // Get the target type and source type
+        TypeKind target_type = var_decl->data.variable_decl.resolved_type;
+        TypeKind source_type = get_expression_type(codegen, var_decl->data.variable_decl.value);
+        
+        // If types don't match, we need to cast
+        if (target_type != source_type && source_type != TYPE_UNKNOWN) {
+          LLVMTypeRef target_llvm_type = get_llvm_type_from_kind(codegen, target_type);
+          const Type *src_info = get_type_info(source_type);
+          const Type *target_info = get_type_info(target_type);
+          
+          if (src_info && target_info && src_info->is_numeric && target_info->is_numeric) {
+            // Perform automatic type conversion for numeric types
+            if (src_info->size < target_info->size) {
+              // Widening conversion
+              if (src_info->is_signed && target_info->is_signed) {
+                initial_value = LLVMBuildSExt(codegen->builder, initial_value, target_llvm_type, "auto_sext");
+              } else if (!src_info->is_signed && !target_info->is_signed) {
+                initial_value = LLVMBuildZExt(codegen->builder, initial_value, target_llvm_type, "auto_zext");
+              } else {
+                initial_value = LLVMBuildIntCast(codegen->builder, initial_value, target_llvm_type, "auto_cast");
+              }
+            } else if (src_info->size > target_info->size) {
+              // Narrowing conversion (truncation)
+              initial_value = LLVMBuildTrunc(codegen->builder, initial_value, target_llvm_type, "auto_trunc");
+            } else {
+              // Same size, different signedness
+              initial_value = LLVMBuildBitCast(codegen->builder, initial_value, target_llvm_type, "auto_bitcast");
+            }
+          }
+        }
+        
         LLVMBuildStore(codegen->builder, initial_value, alloca_inst);
       }
     }
@@ -1148,6 +1359,8 @@ LLVMValueRef codegen_call(CodeGen *codegen, ASTNode *call) {
     return codegen_std_to_i64(codegen, call);
   } else if (strcmp(call->data.call.name, "std.to_string") == 0) {
     return codegen_std_to_string(codegen, call);
+  } else if (strcmp(call->data.call.name, "cast") == 0) {
+    return codegen_cast(codegen, call);
   }
 
   // Look up the function
