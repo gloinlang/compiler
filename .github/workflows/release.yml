@@ -40,7 +40,18 @@ jobs:
         # Find the actual LLVM installation path
         LLVM_PATH=$(brew --prefix llvm)
         echo "LLVM installed at: $LLVM_PATH"
-        echo "LLVM_DIR=${LLVM_PATH}/lib/cmake/llvm" >> $GITHUB_ENV
+        echo "Checking for LLVMConfig.cmake..."
+        find "$LLVM_PATH" -name "LLVMConfig.cmake" -type f 2>/dev/null || echo "LLVMConfig.cmake not found"
+        find "$LLVM_PATH" -name "*LLVM*" -type d 2>/dev/null | head -5
+        # Set the environment variable
+        CMAKE_DIR=$(find "$LLVM_PATH" -name "LLVMConfig.cmake" -type f | head -1 | xargs dirname 2>/dev/null)
+        if [ -n "$CMAKE_DIR" ]; then
+          echo "Found LLVM CMake dir: $CMAKE_DIR"
+          echo "LLVM_DIR=$CMAKE_DIR" >> $GITHUB_ENV
+        else
+          echo "Fallback to standard path"
+          echo "LLVM_DIR=${LLVM_PATH}/lib/cmake/llvm" >> $GITHUB_ENV
+        fi
         echo "${LLVM_PATH}/bin" >> $GITHUB_PATH
 
     - name: Install LLVM (Windows)
@@ -55,6 +66,9 @@ jobs:
       run: |
         mkdir build
         cd build
+        echo "Current LLVM_DIR: $LLVM_DIR"
+        echo "Checking if LLVM_DIR exists:"
+        ls -la "$LLVM_DIR" || echo "LLVM_DIR path does not exist"
         if [ "${{ matrix.os }}" = "macos-latest" ]; then
           cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_DIR="${LLVM_DIR}" ..
         else
