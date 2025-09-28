@@ -641,6 +641,22 @@ LLVMValueRef codegen_cast(CodeGen *codegen, ASTNode *call) {
         }
     }
 
+    // Pointer casts (between different pointer types or integer to pointer)
+    if (is_pointer_type(target_type) || is_pointer_type(src_type)) {
+        // Allow any pointer to pointer cast (like C void* casting)
+        return LLVMBuildBitCast(codegen->builder, value, target_llvm_type, "cast_ptr");
+    }
+
+    // Integer to pointer cast (for null pointers, addresses, etc.)
+    if (src_info->is_numeric && is_pointer_type(target_type)) {
+        return LLVMBuildIntToPtr(codegen->builder, value, target_llvm_type, "cast_int_to_ptr");
+    }
+
+    // Pointer to integer cast
+    if (is_pointer_type(src_type) && target_info->is_numeric) {
+        return LLVMBuildPtrToInt(codegen->builder, value, target_llvm_type, "cast_ptr_to_int");
+    }
+
     // For now, reject other conversions
     fprintf(stderr, "cast(): conversion from %s to %s not yet supported\n",
             type_to_string(src_type), target_type_name);

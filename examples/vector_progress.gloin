@@ -1,0 +1,100 @@
+import "@std"
+
+def struct Vector_i32 {
+    data: *i32;
+    size: i32;
+    capacity: i32;
+}
+
+// Simple helper functions without complex pointer casting for now
+def vector_new() -> Vector_i32 {
+    // Start with capacity of 4  
+    def byte_size: i64 = cast(16, "i64");  // 4 * 4 bytes = 16 bytes
+    def raw_ptr: *i8 = std.malloc(byte_size);
+    
+    def vec: Vector_i32 = Vector_i32 {
+        data: cast(raw_ptr, "*i32"),  // This will work once cast is fixed
+        size: 0,
+        capacity: 4
+    };
+    return vec;
+}
+
+def vector_size(vec: *Vector_i32) -> i32 {
+    return vec.size;
+}
+
+def vector_capacity(vec: *Vector_i32) -> i32 {
+    return vec.capacity;
+}
+
+def vector_empty(vec: *Vector_i32) -> bool {
+    return vec.size == 0;
+}
+
+def vector_push_back_simple(vec: *Vector_i32, value: i32) -> void {
+    // Simple version - just increment size for now
+    // TODO: Implement actual element storage with pointer arithmetic
+    if vec.size < vec.capacity {
+        vec.size = vec.size + 1;
+    }
+}
+
+def vector_free(vec: *Vector_i32) -> void {
+    def raw_ptr: *i8 = cast(vec.data, "*i8");
+    std.free(raw_ptr);
+    vec.data = cast(0, "*i32");
+    vec.size = 0;
+    vec.capacity = 0;
+}
+
+def main() -> i32 {
+    std.println("=== Vector Implementation Progress ===");
+    std.println("");
+    
+    // Test what works so far
+    std.println("1. Testing malloc and struct creation...");
+    def byte_size: i64 = cast(16, "i64");
+    def raw_ptr: *i8 = std.malloc(byte_size);
+    
+    if cast(raw_ptr, "i64") != cast(0, "i64") {
+        std.println("   ✅ malloc() working - got non-null pointer");
+    } else {
+        std.println("   ❌ malloc() failed - got null pointer");
+    }
+    
+    std.println("");
+    std.println("2. Testing basic vector structure...");
+    def vec: Vector_i32 = Vector_i32 {
+        data: cast(0, "*i32"),  // null for now
+        size: 0,
+        capacity: 4
+    };
+    
+    std.print("   Size: ");
+    std.println(std.to_string(vector_size(&vec)));
+    std.print("   Capacity: ");
+    std.println(std.to_string(vector_capacity(&vec)));
+    std.print("   Empty: ");
+    if vector_empty(&vec) {
+        std.println("true");
+    } else {
+        std.println("false");
+    }
+    
+    std.println("");
+    std.println("3. Testing push_back simulation...");
+    vector_push_back_simple(&vec, 42);
+    vector_push_back_simple(&vec, 100);
+    std.print("   Size after 2 push_backs: ");
+    std.println(std.to_string(vector_size(&vec)));
+    
+    // Cleanup
+    std.free(raw_ptr);
+    
+    std.println("");
+    std.println("✅ Vector foundation working!");
+    std.println("🔧 Next: Fix pointer casting for complete implementation");
+    
+    return 0;
+}
