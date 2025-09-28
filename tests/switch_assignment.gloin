@@ -1,0 +1,8 @@
+fn main() -> i32 {
+    def mut result: i32 = 0;
+    switch 1 {
+        case 1:
+            result = 42;
+    }
+    return result;
+}

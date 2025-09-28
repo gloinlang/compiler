@@ -1,0 +1,23 @@
+import "@std"
+
+fn calculate() -> i32 {
+    def a: i32 = 10;
+    def b: i32 = 20;
+    def c: i32 = 5;
+    
+    return a;
+}
+
+fn get_value() -> i32 {
+    def x: i32 = calculate();
+    def y: i32 = 15;
+    return y;
+}
+
+fn main() -> i32 {
+    def result1: i32 = calculate();
+    def result2: i32 = get_value();
+    def final: i32 = 99;
+    
+    return final;
+}

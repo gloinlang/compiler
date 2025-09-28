@@ -1,0 +1,36 @@
+import "@std"
+
+fn test_immutable() -> i32 {
+    def x: i32 = 5;
+    def y: i32 = 10;
+    def result: i32 = x * y + 15;
+    return result;
+}
+
+fn test_mutable() -> i32 {
+    def mut counter: i32 = 0;
+    def mut accumulator: i32 = 1;
+    def base: i32 = 3;
+    
+    return accumulator + counter + base;
+}
+
+fn mixed_mutability(initial: i32) -> i32 {
+    def constant: i32 = 100;
+    def mut working_value: i32 = initial;
+    def multiplier: i32 = 2;
+    def mut final_result: i32 = working_value * multiplier;
+    
+    return final_result + constant;
+}
+
+fn main() -> i32 {
+    def immutable_result: i32 = test_immutable();
+    def mutable_result: i32 = test_mutable();
+    def mixed_result: i32 = mixed_mutability(7);
+    
+    def mut total: i32 = immutable_result + mutable_result;
+    def final_answer: i32 = total + mixed_result;
+    
+    return final_answer;
+}

@@ -1,0 +1,13 @@
+struct Calculator {
+    value: i32;
+    
+    pub add(x: i32) -> i32 {
+        return value + x;
+    }
+}
+
+fn main() -> i32 {
+    def calc: Calculator = Calculator { value: 10 };
+    def result: i32 = calc.add(5);
+    return result;
+}

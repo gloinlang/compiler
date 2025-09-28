@@ -1,0 +1,14 @@
+struct Rectangle {
+    width: i32;
+    height: i32;
+    
+    pub area() -> i32 {
+        return width * height;
+    }
+}
+
+fn main() -> i32 {
+    def rect: Rectangle = Rectangle { width: 10, height: 5 };
+    def area_val: i32 = rect.area();
+    return area_val;
+}

@@ -1,0 +1,18 @@
+import "@std"
+
+fn test_precedence() -> i32 {
+    def result: i32 = 2 + 3 * 4;
+    return result;
+}
+
+fn test_parentheses() -> i32 {
+    def result: i32 = (2 + 3) * 4;
+    return result;
+}
+
+fn main() -> i32 {
+    def result1: i32 = test_precedence();
+    def result2: i32 = test_parentheses();
+    def diff: i32 = result2 - result1;
+    return diff;
+}

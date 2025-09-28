@@ -1,0 +1,5 @@
+fn main() -> i32 {
+    def x: i32 = 2;
+    switch x { }
+    return 0;
+}

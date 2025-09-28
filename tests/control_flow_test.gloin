@@ -1,0 +1,27 @@
+fn main() -> i32 {
+    def mut x: i32 = 10;
+    
+    // Test if statement
+    if x > 5 {
+        x = x + 1;
+    }
+    
+    // Test unless statement  
+    unless x < 20 {
+        x = x - 5;
+    }
+    
+    // Test while loop
+    def mut counter: i32 = 0;
+    while counter < 3 {
+        counter = counter + 1;
+        x = x + counter;
+    }
+    
+    // Test for loop
+    for def mut i: i32 = 0; i < 2; i = i + 1 {
+        x = x * 2;
+    }
+    
+    return x;
+}

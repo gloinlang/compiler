@@ -1,0 +1,15 @@
+import "@std"
+
+fn test_arithmetic() -> i32 {
+    def x: i32 = 10 + 5;
+    def y: i32 = 20 - 3;
+    def z: i32 = 4 * 6;
+    def w: i32 = 15 / 3;
+    
+    return x;
+}
+
+fn main() -> i32 {
+    def result: i32 = test_arithmetic();
+    return result;
+}

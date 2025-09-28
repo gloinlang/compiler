@@ -1,0 +1,9 @@
+fn main() -> i32 {
+    def mut result: i32 = 0;
+    
+    for def mut i: i32 = 0; i < 3; i = i + 1 {
+        result = result + i;
+    }
+    
+    return result;
+}

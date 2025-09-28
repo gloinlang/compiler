@@ -1,0 +1,11 @@
+struct Calculator {
+    value: i32;
+    
+    pub add(x: i32) -> i32 {
+        return value + x;
+    }
+}
+
+fn main() -> i32 {
+    return 0;
+}

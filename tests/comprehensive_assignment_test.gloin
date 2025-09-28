@@ -1,0 +1,11 @@
+fn main() -> i32 {
+    def mut x: i32 = 5;
+    def mut y: i32 = 10;
+    
+    x = 15;
+    y = x + 5;
+    
+    x = y * 2 - 10;
+    
+    return x;
+}

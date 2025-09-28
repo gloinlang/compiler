@@ -1,0 +1,15 @@
+import "@std"
+
+fn calculate(a: i32, b: i32) -> i32 {
+    def sum: i32 = a + b;
+    def product: i32 = a * b;
+    def result: i32 = sum + product;
+    return result;
+}
+
+fn main() -> i32 {
+    def x: i32 = 3;
+    def y: i32 = 4;
+    def result: i32 = calculate(x, y);
+    return result;
+}

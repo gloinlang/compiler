@@ -1,0 +1,25 @@
+import "@std"
+
+fn add_numbers(a: i32, b: i32) -> i32 {
+    def sum: i32 = a;
+    return sum;
+}
+
+fn calculate(x: i32, y: i32, z: i32) -> i32 {
+    def result: i32 = add_numbers(x, y);
+    def final: i32 = add_numbers(result, z);
+    return final;
+}
+
+fn get_constant() -> i32 {
+    return 100;
+}
+
+fn main() -> i32 {
+    def const_val: i32 = get_constant();
+    def result1: i32 = add_numbers(10, 20);
+    def result2: i32 = calculate(5, 15, 25);
+    def final_result: i32 = add_numbers(result1, result2);
+    
+    return final_result;
+}

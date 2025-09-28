@@ -1,0 +1,15 @@
+import "@std"
+
+fn test_mutability() -> i32 {
+    def x: i32 = 10;
+    def mut y: i32 = 20;
+    def z: i32 = x + y;
+    def mut result: i32 = z * 2;
+    
+    return result;
+}
+
+fn main() -> i32 {
+    def final_result: i32 = test_mutability();
+    return final_result;
+}

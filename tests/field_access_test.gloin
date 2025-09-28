@@ -1,0 +1,9 @@
+struct Point {
+    x: i32;
+}
+
+fn main() -> i32 {
+    def p: Point = Point { x: 42 };
+    def val: i32 = p.x;
+    return val;
+}

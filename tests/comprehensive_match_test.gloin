@@ -1,0 +1,18 @@
+fn main() -> i32 {
+    def x: i32 = 2;
+    def mut result: i32 = 0;
+    
+    match x {
+        1 => {
+            result = 10;
+        }
+        2 => {
+            result = 20;
+        }
+        _ => {
+            result = 0;
+        }
+    }
+    
+    return result;
+}

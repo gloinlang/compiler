@@ -1,0 +1,10 @@
+import "@std"
+
+fn add(x: i32, y: i32) -> i32 {
+    return x;
+}
+
+fn main() -> i32 {
+    def result: i32 = add(10, 20);
+    return result;
+}

@@ -1,0 +1,26 @@
+struct Rectangle {
+    width: i32;
+    height: i32;
+    
+    pub area() -> i32 {
+        return width * height;
+    }
+    
+    pub perimeter() -> i32 {
+        return 2 * (width + height);
+    }
+    
+    pub scale(factor: i32) -> i32 {
+        return area() * factor;
+    }
+}
+
+fn main() -> i32 {
+    def rect: Rectangle = Rectangle { width: 10, height: 5 };
+    
+    def area_val: i32 = rect.area();
+    def perimeter_val: i32 = rect.perimeter();
+    def scaled_area: i32 = rect.scale(3);
+    
+    return area_val + perimeter_val + scaled_area;
+}

@@ -1,0 +1,6 @@
+import "@std"
+
+fn main() -> i32 {
+    std.println("Hello, Gloin!");
+    return 0;
+}

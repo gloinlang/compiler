@@ -1,0 +1,20 @@
+import "@std"
+
+def main() -> i32 {
+    // Immutable variable
+    def name: string = "Gloin";
+    def age: i32 = 25;
+    
+    // Mutable variable
+    def mut score: i32 = 100;
+    score = 150;  // Can be modified
+    
+    std.print("Name: ");
+    std.println(name);
+    std.print("Age: ");
+    std.println(std.to_string(age));
+    std.print("Score: ");
+    std.println(std.to_string(score));
+    
+    return 0;
+}

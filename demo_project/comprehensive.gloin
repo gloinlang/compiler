@@ -1,0 +1,29 @@
+import "@std"
+import "./utils" 
+import "#crypto"
+
+fn main() -> i32 {
+    std.println("=== Comprehensive Gloin Import Demo ===");
+    
+    std.println("Enter two numbers:");
+    def first_str: string = std.input();
+    def second_str: string = std.input();
+    
+    def first: i32 = std.to_int(first_str);
+    def second: i32 = std.to_int(second_str);
+    
+    def sum: i32 = add_numbers(first, second);
+    def product: i32 = multiply_numbers(first, second);
+    
+    std.print("Sum: ");
+    std.println(std.to_string(sum));
+    std.print("Product: ");
+    std.println(std.to_string(product));
+    
+    def combined: string = std.to_string(sum);
+    def hash: string = hash_sha256(combined);
+    std.print("Hash of sum: ");
+    std.println(hash);
+    
+    return 0;
+}

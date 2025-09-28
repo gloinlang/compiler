@@ -1,0 +1,11 @@
+fn get_request(url: string) -> string {
+    return "HTTP GET response";
+}
+
+fn post_request(url: string, data: string) -> string {
+    return "HTTP POST response";
+}
+
+fn parse_json(json: string) -> string {
+    return "parsed json data";
+}

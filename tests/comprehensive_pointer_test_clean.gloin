@@ -1,0 +1,10 @@
+fn main() -> i32 {
+    def mut x: i32 = 42;
+    def ptr: *i32 = &x;
+    def val: i32 = *ptr;
+    *ptr = 100;
+    def mut y: i32 = 200;
+    def ptr2: *i32 = &y;
+    *ptr = *ptr2;
+    return x;
+}

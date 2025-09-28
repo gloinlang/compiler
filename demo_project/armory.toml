@@ -1,0 +1,7 @@
+[project]
+name = "demo_project"
+version = "0.1.0"
+author = "Your Name"
+
+[dependencies]
+crypto = { version = "2.1.3", url = "github.com/user/crypto_lib" }

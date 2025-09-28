@@ -1,0 +1,33 @@
+import "@std"
+
+fn calculate_area(width: i32, height: i32) -> i32 {
+    def area: i32 = width * height;
+    return area;
+}
+
+fn calculate_perimeter(width: i32, height: i32) -> i32 {
+    def perimeter: i32 = 2 * (width + height);
+    return perimeter;
+}
+
+fn complex_calculation(a: i32, b: i32, c: i32) -> i32 {
+    def result1: i32 = a * b + c;
+    def result2: i32 = (a + b) * c;
+    def diff: i32 = result2 - result1;
+    def final: i32 = diff / 2 + 1;
+    return final;
+}
+
+fn main() -> i32 {
+    def width: i32 = 5;
+    def height: i32 = 8;
+    
+    def area: i32 = calculate_area(width, height);
+    def perimeter: i32 = calculate_perimeter(width, height);
+    def sum: i32 = area + perimeter;
+    
+    def complex: i32 = complex_calculation(3, 4, 2);
+    def total: i32 = sum + complex;
+    
+    return total;
+}

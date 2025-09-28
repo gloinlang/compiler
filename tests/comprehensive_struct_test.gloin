@@ -1,0 +1,29 @@
+struct Rectangle {
+    width: i32;
+    height: i32;
+    
+    pub area() -> i32 {
+        return width * height;
+    }
+    
+    priv internal_calc() -> i32 {
+        return width + height;
+    }
+}
+
+struct Point {
+    x: i32;
+    y: i32;
+}
+
+fn main() -> i32 {
+    def rect: Rectangle = Rectangle { width: 10, height: 5 };
+    def area_val: i32 = rect.width * rect.height;
+    
+    def p1: Point = Point { x: 3, y: 4 };
+    def p2: Point = Point { x: rect.width, y: rect.height };
+    
+    def sum: i32 = p1.x + p1.y + p2.x + p2.y;
+    
+    return area_val + sum;
+}

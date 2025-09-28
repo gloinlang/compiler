@@ -1,0 +1,12 @@
+struct Simple {
+    x: i32;
+    
+    pub get_x() -> i32 {
+        return x;
+    }
+}
+
+fn main() -> i32 {
+    def s: Simple = Simple { x: 42 };
+    return s.x;
+}

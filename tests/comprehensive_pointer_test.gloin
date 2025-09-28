@@ -1,0 +1,19 @@
+fn main() -> i32 {
+    // Test basic pointer operations
+    def mut x: i32 = 42;
+    def ptr: *i32 = &x;
+    
+    // Test dereference read
+    def val: i32 = *ptr;
+    
+    // Test pointer assignment
+    *ptr = 100;
+    
+    // Test chained pointer operations
+    def mut y: i32 = 200;
+    def ptr2: *i32 = &y;
+    *ptr = *ptr2;
+    
+    // Return the final value of x
+    return x;
+}
