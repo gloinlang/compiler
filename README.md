@@ -489,7 +489,6 @@ make clean && make
 
 ### 📋 Planned
 - 📋 **Generics**: Generic functions and structs
-- 📋 **Traits/Interfaces**: Behavior definition system
 - 📋 **Error Handling**: Result types and error propagation
 - 📋 **Async/Await**: Asynchronous programming support
 - 📋 **FFI**: Foreign function interface for C interop
