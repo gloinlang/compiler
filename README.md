@@ -5,10 +5,28 @@ Gloin is a modern, systems programming language with advanced features including
 ## 🚀 Quick Start
 
 ### Prerequisites
-- CMake 3.12 or later
-- LLVM development libraries  
-- GCC or Clang C/C++ compiler
-- Make build system
+- **CMake** 3.12 or later
+- **LLVM** development libraries and headers
+- **GCC** or **Clang** C compiler
+- **Make** build system
+
+#### Installing Dependencies
+
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install cmake llvm-dev clang build-essential
+```
+
+**Fedora:**
+```bash
+sudo dnf install cmake llvm-devel clang gcc make
+```
+
+**macOS:**
+```bash
+brew install cmake llvm
+```
 
 ### Building the Compiler
 
@@ -23,7 +41,16 @@ Gloin is a modern, systems programming language with advanced features including
 ./build.sh test
 ```
 
-For detailed build instructions, see [BUILD.md](BUILD.md).
+**Alternative build methods:**
+```bash
+# Using CMake directly
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j$(nproc)
+
+# Using original Makefile
+make
+```
 
 ### Try the Demo
 
@@ -324,9 +351,9 @@ The repository includes several example programs:
 
 ```bash
 # Simple examples
-./build/gloinc examples/hello_world.gloin && ./hello_world
-./build/gloinc examples/variables.gloin && ./variables  
-./build/gloinc examples/functions.gloin && ./functions
+./build/gloinc examples/hello_world.gloin && ./examples/hello_world
+./build/gloinc examples/variables.gloin && ./examples/variables  
+./build/gloinc examples/functions.gloin && ./examples/functions
 
 # More complex examples
 ./build/gloinc tests/arithmetic_showcase.gloin --ast
@@ -375,6 +402,8 @@ The repository includes several example programs:
 
 **Try it yourself** - the examples in this README all work and compile to working executables!
 
+## 🐛 Troubleshooting
+
 ### Common Parser Errors
 
 **"Expected import or def declaration"**
@@ -410,7 +439,7 @@ def main() -> i32 {
 }
 ```
 
-### Compilation Issues
+### Build Issues
 
 **LLVM not found during build:**
 ```bash
@@ -427,6 +456,17 @@ export LLVM_DIR=/usr/lib/llvm-<version>/lib/cmake/llvm
 **Linking errors:**
 - Make sure you're using the C++ linker (handled automatically by CMake)
 - Check that all LLVM development packages are installed
+
+**Build script fails:**
+```bash
+# Try manual build
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j$(nproc)
+
+# Or use original Makefile
+make clean && make
+```
 
 ## 🏗️ Language Features Status
 
@@ -508,8 +548,8 @@ The Gloin compiler follows a traditional multi-phase design:
 ### Setting Up Development Environment
 ```bash
 # Clone and build
-git clone <repository-url>
-cd gloin
+git clone https://github.com/gloinlang/compiler.git
+cd compiler
 ./build.sh
 
 # Run tests
@@ -517,7 +557,7 @@ cd gloin
 
 # Try examples
 ./build/gloinc examples/hello_world.gloin
-./hello_world
+./examples/hello_world
 ```
 
 ### Coding Standards
@@ -540,22 +580,15 @@ cd gloin
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Links
-
-- **Documentation**: See `docs/` directory
-- **Examples**: Browse `examples/` and `tests/` directories  
-- **Build Instructions**: [BUILD.md](BUILD.md)
-- **Development Roadmap**: [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md)
-
 ## 📞 Support
 
 If you encounter issues:
 
 1. **Check Examples**: Look at working examples in `examples/` and `tests/`
 2. **Verify Syntax**: Ensure functions use `def` and files start with imports
-3. **Build Issues**: See [BUILD.md](BUILD.md) for detailed instructions
+3. **Build Issues**: See troubleshooting section above
 4. **Report Bugs**: Create an issue with minimal reproduction case
 
 ---
 
-**Happy coding with Gloin! 🎯**
+**Happy coding with Gloin!**
