@@ -546,7 +546,7 @@ int main(int argc, char *argv[]) {
         } else {
             // If no flag, treat as output name for backward compatibility
             if (!output_name) {
-                output_name = strdup(argv[i]);
+                output_name = argv[i]; // Don't use strdup here
             } else {
                 fprintf(stderr, "Error: Unknown argument '%s'\n", argv[i]);
                 return 1;
@@ -555,8 +555,10 @@ int main(int argc, char *argv[]) {
     }
     
     // Derive output name from input file if not specified (and we're compiling)
+    char *allocated_output_name = NULL;  // Track if we allocated memory
     if (!output_name && !ast_only_mode) {
-        output_name = strdup(input_file);
+        allocated_output_name = strdup(input_file);
+        output_name = allocated_output_name;
         
         // Remove .gloin extension if present
         char *dot = strrchr(output_name, '.');
@@ -567,8 +569,8 @@ int main(int argc, char *argv[]) {
     
     char *content = read_file(input_file);
     if (!content) {
-        if (output_name && strchr(argv[1], '/')) {
-            free(output_name);
+        if (allocated_output_name) {
+            free(allocated_output_name);
         }
         return 1;
     }
@@ -596,8 +598,8 @@ int main(int argc, char *argv[]) {
         free_parser(parser);
         free_lexer(lexer);
         free(content);
-        if (output_name && strchr(argv[1], '/')) {
-            free(output_name);
+        if (allocated_output_name) {
+            free(allocated_output_name);
         }
         return 1;
     }
@@ -618,8 +620,8 @@ int main(int argc, char *argv[]) {
         free_parser(parser);
         free_lexer(lexer);
         free(content);
-        if (output_name && strchr(argv[1], '/')) {
-            free(output_name);
+        if (allocated_output_name) {
+            free(allocated_output_name);
         }
         return 1;
     }
@@ -656,8 +658,8 @@ int main(int argc, char *argv[]) {
         free_parser(parser);
         free_lexer(lexer);
         free(content);
-        if (output_name && strchr(argv[1], '/')) {
-            free(output_name);
+        if (allocated_output_name) {
+            free(allocated_output_name);
         }
         return 1;
     }
@@ -668,8 +670,8 @@ int main(int argc, char *argv[]) {
     free_parser(parser);
     free_lexer(lexer);
     free(content);
-    if (output_name && strchr(argv[1], '/')) {
-        free(output_name);
+    if (allocated_output_name) {
+        free(allocated_output_name);
     }
     
     return 0;

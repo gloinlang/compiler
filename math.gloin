@@ -1,11 +1,31 @@
-fn add(a: i32, b: i32) -> i32 {
+import "@std"
+
+def add(a: i32, b: i32) -> i32 {
     return a + b;
 }
 
-fn multiply(a: i32, b: i32) -> i32 {
+def multiply(a: i32, b: i32) -> i32 {
     return a * b;
 }
 
-fn square(x: i32) -> i32 {
+def square(x: i32) -> i32 {
     return x * x;
+}
+
+def main() -> i32 {
+    def x: i32 = 5;
+    def y: i32 = 3;
+    def sum: i32 = add(x, y);
+    def product: i32 = multiply(x, y);
+    def squared: i32 = square(x);
+    
+    std.print("Math operations demo:\n");
+    std.print("5 + 3 = ");
+    std.println(std.to_string(sum));
+    std.print("5 * 3 = ");
+    std.println(std.to_string(product));
+    std.print("5^2 = ");
+    std.println(std.to_string(squared));
+    
+    return 0;
 }

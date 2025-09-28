@@ -1,34 +1,19 @@
 import "@std"
 
-fn add(a: i32, b: i32) -> i32 {
-    if a > 10 {
-        return b + b;
-    }
-    return a + b;
-}
-
-fn fibo(a: i32) -> i32 {
-    def low_end: i32 = 1;
+def main() -> i32 {
+    def a: i32 = 5;
+    def b: i32 = 15;
     
-    def res: i32 = add(1, a);
-
-    if res > 1 {
-        std.println("Somtin' happned");
+    // Simple addition function inline
+    def result: i32 = a + b;
+    
+    std.print("Simple fibonacci demo: ");
+    std.println(std.to_string(result));
+    
+    def n: i32 = 10;
+    if n > 5 {
+        std.println("Number is greater than 5");
     }
-
-    std.println(res);
-    std.println(a);
-    std.println(1);
-    std.println(3);
-    std.println(4);
-    std.println(3);
-    std.println(low_end);
-
-    return low_end;
-}
-
-fn main() -> i32 {
-    def n: i32 = 1;
-    def res: i32 = fibo(n);
+    
     return 0;
 }
