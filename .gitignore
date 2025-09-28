@@ -13,6 +13,17 @@ test_*
 *_out
 comprehensive
 
+# Compiled Gloin programs (executables in examples/)
+examples/hello_std  
+examples/hello_world
+examples/functions
+examples/variables
+examples/main
+examples/math
+examples/utils
+examples/fibo
+examples/version_test
+
 # Release packages
 release/
 
