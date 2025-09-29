@@ -1,0 +1,140 @@
+import "@std"
+
+def struct Vector_i32 {
+    data_addr: i64,
+    size: i32,
+    capacity: i32,
+    
+    def new() -> Vector_i32 {
+        return Vector_i32 {
+            data_addr: cast(0, "i64"),
+            size: 0,
+            capacity: 4
+        };
+    }
+    
+    def size(self) -> i32 {
+        return self.size;
+    }
+    
+    def capacity(self) -> i32 {
+        return self.capacity;
+    }
+    
+    def empty(self) -> bool {
+        return self.size == 0;
+    }
+    
+    def push_back(self, value: i32) -> void {
+        if self.size < self.capacity {
+            self.size = self.size + 1;
+        }
+    }
+    
+    def pop_back(self) -> void {
+        if self.size > 0 {
+            self.size = self.size - 1;
+        }
+    }
+    
+    def clear(self) -> void {
+        self.size = 0;
+    }
+    
+    def front(self) -> i32 {
+        return 42;  // Placeholder
+    }
+    
+    def back(self) -> i32 {
+        return 999; // Placeholder
+    }
+    
+    def at(self, index: i32) -> i32 {
+        return index; // Placeholder
+    }
+    
+    def free(self) -> void {
+        // TODO: Free allocated memory
+        self.data_addr = cast(0, "i64");
+        self.size = 0;
+        self.capacity = 0;
+    }
+}
+
+def main() -> i32 {
+    std.println("=== Simplified C++ Style Vector - All Methods Public ===");
+    std.println("");
+    
+    // Static constructor call
+    std.println("Creating vector with Vector_i32.new()...");
+    def mut vec: Vector_i32 = Vector_i32.new();
+    
+    std.print("vec.capacity() = ");
+    std.println(std.to_string(vec.capacity()));
+    std.print("vec.size() = ");
+    std.println(std.to_string(vec.size()));
+    std.print("vec.empty() = ");
+    if vec.empty() {
+        std.println("true");
+    } else {
+        std.println("false");
+    }
+    
+    std.println("");
+    std.println("Adding elements with vec.push_back()...");
+    vec.push_back(42);
+    vec.push_back(100);
+    vec.push_back(256);
+    
+    std.print("vec.size() after push_backs = ");
+    std.println(std.to_string(vec.size()));
+    std.print("vec.empty() = ");
+    if vec.empty() {
+        std.println("true");
+    } else {
+        std.println("false");
+    }
+    
+    std.println("");
+    std.println("Element access methods:");
+    std.print("vec.front() = ");
+    std.println(std.to_string(vec.front()));
+    std.print("vec.back() = ");
+    std.println(std.to_string(vec.back()));
+    std.print("vec.at(1) = ");
+    std.println(std.to_string(vec.at(1)));
+    
+    std.println("");
+    std.println("Container operations:");
+    std.println("vec.pop_back()");
+    vec.pop_back();
+    std.print("vec.size() = ");
+    std.println(std.to_string(vec.size()));
+    
+    std.println("vec.clear()");
+    vec.clear();
+    std.print("vec.size() = ");
+    std.println(std.to_string(vec.size()));
+    std.print("vec.empty() = ");
+    if vec.empty() {
+        std.println("true");
+    } else {
+        std.println("false");
+    }
+    
+    std.println("");
+    std.println("Cleanup:");
+    vec.free();
+    
+    std.println("");
+    std.println("✅ SUCCESS: Simplified Vector with All Methods Public!");
+    std.println("");
+    std.println("📋 Clean syntax - no visibility modifiers needed:");
+    std.println("  def method(self) -> return_type    // Always public");
+    std.println("  Just like struct fields are always public");
+    std.println("");
+    std.println("🎉 This is clean, simple C++ style OOP in Gloin!");
+    std.println("🚀 No complexity with access modifiers - everything accessible!");
+    
+    return 0;
+}
