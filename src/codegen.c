@@ -1240,6 +1240,8 @@ LLVMValueRef codegen_statement(CodeGen *codegen, ASTNode *statement) {
     return codegen_call(codegen, statement);
   case NODE_STRUCT:
     return codegen_struct(codegen, statement);
+  case NODE_ENUM:
+    return codegen_enum(codegen, statement);
   case NODE_BLOCK:
     return codegen_block(codegen, statement);
   case NODE_IF:
@@ -1902,6 +1904,38 @@ LLVMValueRef codegen_struct_method(CodeGen *codegen, ASTNode *method,
   free(param_types);
   free(mangled_name);
   return function;
+}
+
+LLVMValueRef codegen_enum(CodeGen *codegen, ASTNode *enum_decl) {
+  if (enum_decl->type != NODE_ENUM) {
+    fprintf(stderr, "Expected enum declaration node\n");
+    return NULL;
+  }
+
+  const char *enum_name = enum_decl->data.enum_decl.name;
+  
+  // For now, implement enums as simple integer constants
+  // Each variant gets an increasing integer value starting from 0
+  for (int i = 0; i < enum_decl->data.enum_decl.variant_count; i++) {
+    ASTNode *variant = enum_decl->data.enum_decl.variants[i];
+    const char *variant_name = variant->data.enum_variant.name;
+    
+    // Create global constant for enum variant
+    // Name format: EnumName_VariantName
+    char *full_name = malloc(strlen(enum_name) + strlen(variant_name) + 2);
+    sprintf(full_name, "%s_%s", enum_name, variant_name);
+    
+    // Create global constant with integer value
+    LLVMValueRef global_const = LLVMAddGlobal(codegen->module, LLVMInt32TypeInContext(codegen->context), full_name);
+    LLVMSetInitializer(global_const, LLVMConstInt(LLVMInt32TypeInContext(codegen->context), i, 0));
+    LLVMSetLinkage(global_const, LLVMExternalLinkage);
+    LLVMSetGlobalConstant(global_const, 1);  // Mark as constant
+    
+    free(full_name);
+  }
+  
+  printf("Generated enum %s with %d variants\n", enum_name, enum_decl->data.enum_decl.variant_count);
+  return NULL;  // Enum declarations don't return values
 }
 
 LLVMValueRef codegen_field_access(CodeGen *codegen, ASTNode *field_access) {

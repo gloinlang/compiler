@@ -63,6 +63,7 @@ LLVMValueRef codegen_identifier(CodeGen *codegen, ASTNode *identifier);
 LLVMValueRef codegen_binary_op(CodeGen *codegen, ASTNode *binary_op);
 LLVMValueRef codegen_unary_op(CodeGen *codegen, ASTNode *unary_op);
 LLVMValueRef codegen_struct(CodeGen *codegen, ASTNode *struct_decl);
+LLVMValueRef codegen_enum(CodeGen *codegen, ASTNode *enum_decl);
 LLVMValueRef codegen_struct_method(CodeGen *codegen, ASTNode *method, const char *struct_name, LLVMTypeRef struct_type);
 LLVMValueRef codegen_field_access(CodeGen *codegen, ASTNode *field_access);
 LLVMValueRef codegen_method_call(CodeGen *codegen, ASTNode *method_call);
