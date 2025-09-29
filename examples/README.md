@@ -17,7 +17,15 @@ To run any example:
 
 ## 📚 Examples Overview
 
-### **Basic Examples**
+### **Container Examples**
+- **`vector_cpp_style.gloin`** - Complete C++ std::vector implementation with methods
+- **`vector_foundation.gloin`** - Simplified vector showing OOP struct methods
+- **`complete_types_test.gloin`** - All integer types: i8, i16, i32, i64, u8, u16, u32, u64
+- **`type_casting.gloin`** - Type conversion with cast() function
+- **`factorial.gloin`** - Factorial with different integer types
+- **`ultimate_factorial.gloin`** - Multi-type factorial showcase
+
+### **Basic Language Features**
 - **`hello_world.gloin`** - Simple "Hello, World!" program
 - **`hello_std.gloin`** - Standard library demonstration
 - **`variables.gloin`** - Variable declarations and mutability

@@ -181,12 +181,12 @@ def struct Person {
     name: string,
     age: i32,
     
-    pub def greet(self) -> void {
+    def greet(self) -> void {
         std.print("Hello, I'm ");
         std.println(self.name);
     }
     
-    pub def is_adult(self) -> bool {
+    def is_adult(self) -> bool {
         return self.age >= 18;
     }
 }
